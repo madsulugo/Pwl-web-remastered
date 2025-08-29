@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purriau!</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2rem;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+    }
+    button {
+      background: #ff6f61;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s, background 0.3s;
+    }
+    button:hover {
+      background: #ff3b2e;
+      transform: scale(1.05);
+    }
+    .resultado {
+      margin-top: 30px;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+    .resultado p {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      margin-bottom: 15px;
+      animation: pop 0.5s ease;
+    }
+    .resultado img {
+      max-width: 300px;
+      max-height: 300px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      animation: bounceIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.1); opacity: 1; }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🐾 ¡Bienvenido al Purriau! 🐾</h1>
+  <button id="btnPurriau">Mostrar Purriau</button>
+  <div class="resultado" id="resultado"></div>
+
+  <script>
+    const frasesComunes = [
+      "Un purriau :D",
+      "Que purriau lindo",
+      "HAY PURRIAU",
+      "DIOS QUE LINDO PURRIAU"
+    ];
+
+    const frasesRaras = [
+      "Purriau derrotó al webo de Sammy",
+      "Purrausino devilisino",
+      "¿Qué haces viendo tantos purriaus?"
+    ];
+
+    async function obtenerGato() {
+      const res = await fetch("https://api.thecatapi.com/v1/images/search");
+      const data = await res.json();
+      return data[0].url;
+    }
+
+    document.getElementById("btnPurriau").addEventListener("click", async () => {
+      let texto;
+      if (Math.random() < 0.1) {
+        // 10% de probabilidad de texto raro
+        texto = frasesRaras[Math.floor(Math.random() * frasesRaras.length)];
+      } else {
+        texto = frasesComunes[Math.floor(Math.random() * frasesComunes.length)];
+      }
+
+      const imagen = await obtenerGato();
+
+      document.getElementById("resultado").innerHTML = `
+        <p>${texto}</p>
+        <img src="${imagen}" alt="Gatito purriau">
+      `;
+    });
+  </script>
+</body>
+</html>
